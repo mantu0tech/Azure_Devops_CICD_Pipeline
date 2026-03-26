@@ -1,8 +1,203 @@
-.error {
-    color: red;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── Color Palette ── */
+:root {
+  --pink:    #ff4db8;
+  --purple:  #8b5cf6;
+  --cyan:    #06d6d6;
+  --yellow:  #ffd166;
+  --orange:  #ff7849;
+  --bg:      #0d0d1a;
+  --surface: #161628;
+  --border:  #2e2e52;
+  --text:    #e8e8ff;
+  --muted:   #7a7a9d;
+
+  --gradient-a: linear-gradient(135deg, var(--pink), var(--purple));
+  --gradient-b: linear-gradient(135deg, var(--cyan), var(--purple));
+  --glow-pink:  0 0 18px rgba(255, 77, 184, 0.45);
+  --glow-cyan:  0 0 18px rgba(6, 214, 214, 0.40);
 }
 
-textarea {
-    width: 50rem;
-    height: 10rem;
+/* ── Reset / Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+
+  /* subtle animated mesh background */
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(139, 92, 246, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 45% at 80% 70%, rgba(255, 77, 184, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 35% at 55% 15%, rgba(6, 214, 214, 0.10) 0%, transparent 65%);
+}
+
+/* ── Card wrapper ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem 2.8rem;
+  width: min(56rem, 95vw);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rainbow top accent bar */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--pink) 0%,
+    var(--purple) 30%,
+    var(--cyan) 60%,
+    var(--yellow) 85%,
+    var(--orange) 100%);
+}
+
+/* ── Label ── */
+label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.65rem;
+  transition: color 0.2s;
+}
+
+/* ── Textarea ── */
+textarea {
+  width: 100%;
+  height: 12rem;
+  resize: vertical;
+
+  background: #0d0d1a;
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.92rem;
+  line-height: 1.7;
+
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  outline: none;
+
+  transition:
+    border-color 0.25s,
+    box-shadow   0.25s,
+    background   0.25s;
+}
+
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+textarea:hover {
+  border-color: #4a4a70;
+}
+
+textarea:focus {
+  border-color: var(--purple);
+  box-shadow: var(--glow-cyan),
+              inset 0 0 0 1px rgba(139, 92, 246, 0.25);
+  background: #10101f;
+}
+
+/* Focus → label highlights */
+textarea:focus + label,
+label:has(+ textarea:focus) {
+  color: var(--cyan);
+}
+
+/* ── Error message ── */
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 0.65rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--pink);
+
+  background: rgba(255, 77, 184, 0.08);
+  color: var(--pink);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  animation: slideIn 0.22s ease-out;
+}
+
+/* little warning icon via pseudo */
+.error::before {
+  content: '⚠';
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px var(--pink));
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Submit button ── */
+.btn {
+  margin-top: 1.4rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+
+  background: var(--gradient-a);
+  box-shadow: var(--glow-pink);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow: 0 0 28px rgba(255, 77, 184, 0.55);
+}
+
+.btn:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
+
+/* ── Character counter ── */
+.counter {
+  margin-top: 0.4rem;
+  text-align: right;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.counter.warn  { color: var(--yellow); }
+.counter.limit { color: var(--pink);   }
